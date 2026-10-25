@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Un año contigo ❤️</title>
+  <style>
+    :root {
+      --wine: #7b1e3a;
+      --pink: #ff6f91;
+      --cream: #fff8f3;
+      --ink: #44232e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at 10% 10%, #ffdce6 0 10%, transparent 28%),
+        radial-gradient(circle at 90% 80%, #ffe9c9 0 8%, transparent 30%),
+        linear-gradient(135deg, #fff8f3, #ffe8ed);
+    }
+
+    .screen {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      padding: 28px 16px;
+    }
+
+    .card {
+      position: relative;
+      z-index: 2;
+      width: min(720px, 100%);
+      padding: clamp(28px, 7vw, 70px) clamp(22px, 8vw, 76px);
+      overflow: visible;
+      text-align: center;
+      background: rgba(255, 255, 255, .73);
+      border: 1px solid rgba(255,255,255,.8);
+      border-radius: 32px;
+      box-shadow: 0 25px 70px rgba(123, 30, 58, .18);
+      backdrop-filter: blur(12px);
+      animation: appear 1.2s ease both;
+    }
+
+    .card::before {
+      position: fixed;
+      z-index: -1;
+      top: 50%;
+      left: 50%;
+      content: "♥";
+      color: rgba(237, 65, 108, .2);
+      font-size: 18rem;
+      line-height: 1;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(var(--background-heart-scale, .2));
+      transform-origin: center;
+      transition: transform 1s cubic-bezier(.2, .8, .2, 1), color 1s;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--wine);
+      font-family: "Trebuchet MS", sans-serif;
+      font-size: .78rem;
+      font-weight: bold;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--wine);
+      font-size: clamp(2.4rem, 10vw, 5.3rem);
+      line-height: .95;
+    }
+
+    .subtitle {
+      margin: 22px auto 0;
+      max-width: 520px;
+      font-size: clamp(1.08rem, 3vw, 1.35rem);
+      line-height: 1.6;
+    }
+
+    .date {
+      margin: 20px 0 0;
+      color: #9f536a;
+      font-family: "Trebuchet MS", sans-serif;
+      font-size: .9rem;
+      letter-spacing: .08em;
+    }
+
+    .heart {
+      position: relative;
+      z-index: 1;
+      display: inline-block;
+      margin: 20px 0 6px;
+      color: #ed416c;
+      font-size: 5rem;
+      filter: drop-shadow(0 9px 10px rgba(237, 65, 108, .25));
+      animation: beat 1.15s ease-in-out infinite;
+    }
+
+    .heart-stage {
+      position: relative;
+      display: grid;
+      place-items: center;
+      height: 130px;
+      margin: -12px 0 -8px;
+    }
+
+    .heart-stage::before {
+      position: absolute;
+      content: "♥";
+      color: rgba(255, 111, 145, .14);
+      font-size: 9rem;
+      transform: scale(.35);
+      transition: transform 1s cubic-bezier(.2, .8, .2, 1), color 1s;
+    }
+
+    .heart-stage.growing::before {
+      color: rgba(255, 111, 145, .32);
+      transform: scale(var(--heart-scale, .35));
+    }
+
+    .stitch {
+      display: block;
+      width: min(290px, 82vw);
+      height: auto;
+      margin: 20px auto 0;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 5px rgba(36, 106, 156, .2));
+      z-index: 3;
+    }
+
+    .image-area {
+      min-height: 260px;
+      margin-top: 12px;
+      overflow: hidden;
+      transition: min-height .8s ease;
+    }
+
+    .progress {
+      margin: 5px auto 0;
+      max-width: 440px;
+      color: #9f536a;
+      font: .78rem "Trebuchet MS", sans-serif;
+    }
+
+    .progress-track {
+      height: 9px;
+      margin-top: 8px;
+      overflow: hidden;
+      background: #f6d4dd;
+      border-radius: 99px;
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #ff6f91, #ed416c);
+      border-radius: inherit;
+      transition: width .8s ease;
+    }
+
+    .message {
+      margin: 20px auto;
+      max-width: 530px;
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 22px;
+      color: white;
+      background: var(--wine);
+      box-shadow: 0 8px 18px rgba(123, 30, 58, .22);
+      cursor: pointer;
+      font: bold .95rem "Trebuchet MS", sans-serif;
+      transition: transform .2s, box-shadow .2s, background .2s;
+    }
+
+    button:hover, button:focus-visible {
+      background: #a52b50;
+      box-shadow: 0 12px 24px rgba(123, 30, 58, .3);
+      transform: translateY(-3px);
+      outline: none;
+    }
+
+    button.liked {
+      background: #ed416c;
+      animation: pop .45s ease;
+    }
+
+    .secret {
+      max-height: 0;
+      margin: 0 auto;
+      max-width: 500px;
+      overflow: hidden;
+      opacity: 0;
+      line-height: 1.7;
+      transition: max-height .8s ease, opacity .8s ease, margin .8s ease;
+    }
+
+    .secret.visible {
+      max-height: 280px;
+      margin: 22px auto 0;
+      opacity: 1;
+    }
+
+    .reason {
+      min-height: 54px;
+      margin: 16px auto 0;
+      color: var(--wine);
+      font-size: 1.2rem;
+      font-weight: bold;
+      line-height: 1.5;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity .4s, transform .4s;
+    }
+
+    .reason.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .signature {
+      margin-top: 24px;
+      color: var(--wine);
+      font-size: 1.3rem;
+      font-style: italic;
+    }
+
+    .floating-heart {
+      position: fixed;
+      z-index: 1;
+      bottom: -30px;
+      color: rgba(237, 65, 108, .35);
+      pointer-events: none;
+      animation: float-up linear forwards;
+    }
+
+    .burst-heart {
+      position: fixed;
+      z-index: 5;
+      pointer-events: none;
+      font-size: 1.6rem;
+      animation: burst 1.2s ease-out forwards;
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(26px) scale(.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.13); }
+    }
+    @keyframes pop {
+      50% { transform: scale(1.16); }
+    }
+    @keyframes float-up {
+      to { transform: translateY(-115vh) rotate(25deg); opacity: 0; }
+    }
+    @keyframes burst {
+      to {
+        transform: translate(var(--x), var(--y)) rotate(var(--r));
+        opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="screen">
+    <article class="card">
+      <p class="eyebrow">Una pequeña sorpresa para ti</p>
+      <div class="heart-stage" id="heartStage">
+        <div class="heart" aria-hidden="true">♥</div>
+      </div>
+      <h1>¡Un año contigo!</h1>
+      <p class="date">365 días de nosotros · para siempre por comenzar</p>
+      <p class="subtitle">
+        Gracias por convertir los días normales en recuerdos que quiero guardar
+        para toda la vida.
+      </p>
+      <p class="message">
+        Te tengo una sorpresa: toca el botón varias veces y descubre,
+        poquito a poquito, todo lo que me encanta de ti.
+      </p>
+      <div class="image-area">
+        <img
+          class="stitch"
+          src="stitch_amor.png"
+          alt="Stitch sosteniendo un corazón que dice te amo"
+        >
+      </div>
+      <div class="progress">
+        <span id="progressText">0 de 10 razones descubiertas</span>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+      <div class="actions">
+        <button id="likeButton" type="button">💖 Me encanta</button>
+      </div>
+      <p id="reason" class="reason" aria-live="polite"></p>
+      <p id="secretMessage" class="secret">
+        Y si Stitch tuviera que elegir su lugar favorito, sería a tu lado...
+        porque tú eres mi persona favorita en todo el universo.
+        <br><span class="signature">Feliz primer aniversario, mi amor. ♥</span>
+      </p>
+    </article>
+  </main>
+
+  <script>
+    const likeButton = document.querySelector("#likeButton");
+    const heartStage = document.querySelector("#heartStage");
+    const progressFill = document.querySelector("#progressFill");
+    const progressText = document.querySelector("#progressText");
+    const reason = document.querySelector("#reason");
+    const secretMessage = document.querySelector("#secretMessage");
+    const reasons = [
+      "Me encantas porque contigo puedo ser completamente yo. 💙",
+      "Me gustas porque tu sonrisa puede arreglar cualquier día. ✨",
+      "Me encantas porque haces que lo sencillo se sienta especial. 🌸",
+      "Me gustas porque contigo siento paz, emoción y hogar al mismo tiempo. 🫶",
+      "Me encantas porque siempre encuentras una forma de hacerme sonreír. 😊",
+      "Me gustas porque tus abrazos se sienten como mi lugar favorito. 🤍",
+      "Me encantas porque cada recuerdo contigo vale oro. 🌟",
+      "Me gustas porque me inspiras a ser mejor y a soñar más. 💫",
+      "Me encantas porque contigo hasta los días difíciles pesan menos. 🌷",
+      "Me gustas porque después de un año te elegiría una y mil veces. 💖"
+    ];
+    let discovered = 0;
+
+    function createFloatingHeart() {
+      const heart = document.createElement("span");
+      heart.className = "floating-heart";
+      heart.textContent = Math.random() > .25 ? "♥" : "♡";
+      heart.style.left = `${Math.random() * 100}vw`;
+      heart.style.fontSize = `${12 + Math.random() * 20}px`;
+      heart.style.animationDuration = `${7 + Math.random() * 7}s`;
+      document.body.appendChild(heart);
+      heart.addEventListener("animationend", () => heart.remove());
+    }
+
+    function celebrate() {
+      const symbols = ["♥", "♡", "✨", "💕"];
+      for (let i = 0; i < 18; i += 1) {
+        const heart = document.createElement("span");
+        heart.className = "burst-heart";
+        heart.textContent = symbols[i % symbols.length];
+        heart.style.left = "50%";
+        heart.style.top = "48%";
+        heart.style.setProperty("--x", `${(Math.random() - .5) * 360}px`);
+        heart.style.setProperty("--y", `${(Math.random() - .5) * 300}px`);
+        heart.style.setProperty("--r", `${(Math.random() - .5) * 80}deg`);
+        document.body.appendChild(heart);
+        heart.addEventListener("animationend", () => heart.remove());
+      }
+    }
+
+    likeButton.addEventListener("click", () => {
+      if (discovered < reasons.length) discovered += 1;
+      const percentage = (discovered / reasons.length) * 100;
+      heartStage.style.setProperty("--heart-scale", `${.35 + discovered * .16}`);
+      document.documentElement.style.setProperty(
+        "--background-heart-scale",
+        `${.2 + discovered * .1}`
+      );
+      heartStage.classList.remove("growing");
+      void heartStage.offsetWidth;
+      heartStage.classList.add("growing");
+      progressFill.style.width = `${percentage}%`;
+      progressText.textContent = `${discovered} de ${reasons.length} razones descubiertas`;
+      reason.textContent = reasons[discovered - 1];
+      reason.classList.remove("show");
+      void reason.offsetWidth;
+      reason.classList.add("show");
+      likeButton.classList.add("liked");
+      likeButton.textContent = discovered === reasons.length
+        ? "💖 ¡Ya descubriste todo!"
+        : "💖 Me encanta, otra vez";
+      if (discovered === reasons.length) {
+        secretMessage.classList.add("visible");
+        progressText.textContent = "♥ Corazón completo: 1 año contigo ♥";
+      }
+      celebrate();
+    });
+
+    setInterval(createFloatingHeart, 900);
+    for (let i = 0; i < 8; i += 1) createFloatingHeart();
+  </script>
+</body>
+</html>
